@@ -39,6 +39,8 @@ return view('listings.index', [
             $formFields['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
+    $formFields['user_id'] = auth()->id();
+
         Listing::create($formFields);
 
         return redirect('/')->with('message', 'Success! Listing created!');
@@ -58,6 +60,11 @@ return view('listings.index', [
 
     // Update listing data
     public function update(Request $request, Listing $listing){
+        // Make sure logged in user is owner
+        if($listing->userìd != auth()->id()){
+            abort(403, 'Unauthorised action');
+        }
+
         $formFields = $request->validate([
             'title' => 'required',
             'company' => 'required',
@@ -79,9 +86,20 @@ return view('listings.index', [
 
     // Delete listing
     public function destroy(Listing $listing){
+        // Make sure logged in user is owner
+        if($listing->userìd != auth()->id()){
+            abort(403, 'Unauthorised action');
+        }
+        
         $listing->delete();
         return redirect('/')->with('message', 'Listing deleted successfully');
 
+    }
+
+    // Manage Listings
+    public function manage(){
+        return view('listings.manage', ['listings'=> auth()
+        ->user()->listings()->get()]);
     }
 
 
