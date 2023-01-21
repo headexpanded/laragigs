@@ -30,7 +30,6 @@ Route::get('/listings/{listing}/edit', [ListingController::class, 'edit']);
 // Update Listing
 Route::put('/listings/{listing}', [ListingController::class, 'update']);
 
-
 // Delete Listing
 Route::delete('/listings/{listing}', [ListingController::class, 'destroy']);
 
@@ -42,3 +41,12 @@ Route::get('/register', [UserController::class, 'create']);
 
 // Store New User
 Route::post('/users', [UserController::class, 'store']);
+
+// User Logout
+Route::post('/logout', [UserController::class, 'logout']);
+
+// Show Login Form
+Route::get('/login', [UserController::class, 'login']);
+
+// Log In User
+Route::post('/users/authenticate', [UserController::class, 'authenticate']);
